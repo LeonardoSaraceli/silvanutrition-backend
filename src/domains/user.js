@@ -13,6 +13,7 @@ const getUserCodesDb = async (userCode, startDate, endDate) => {
 
   let totalOrders = 0
   let totalAmount = 0
+  const orderDetailsArray = []
 
   for (let page = 1; ; page++) {
     const queryData = await fetch(
@@ -59,6 +60,13 @@ const getUserCodesDb = async (userCode, startDate, endDate) => {
           if (couponData) {
             totalOrders++
             totalAmount += order.totalValue / 100
+
+            orderDetailsArray.push({
+              buyer: orderDetails.clientProfileData.firstName,
+              total: (order.totalValue / 100).toFixed(2),
+              date: new Date(order.creationDate).toLocaleDateString('pt-BR'),
+              comission: ((order.totalValue / 100) * 0.15).toFixed(2),
+            })
           }
         } catch (err) {
           console.error(
@@ -76,6 +84,7 @@ const getUserCodesDb = async (userCode, startDate, endDate) => {
     orders: totalOrders,
     ammount: totalAmount.toFixed(2),
     comission: (totalAmount * 0.15).toFixed(2),
+    orderDetailsArray,
   }
 }
 

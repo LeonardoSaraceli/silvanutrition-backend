@@ -14,11 +14,8 @@ import {
 const getUserCodes = async (req, res) => {
   const { startDate, endDate } = req.query
 
-  const { orders, ammount, comission } = await getUserCodesDb(
-    req.user.code,
-    startDate,
-    endDate
-  )
+  const { orders, ammount, comission, orderDetailsArray } =
+    await getUserCodesDb(req.user.code, startDate, endDate)
 
   res.json({
     code: req.user.code,
@@ -27,6 +24,7 @@ const getUserCodes = async (req, res) => {
     totalOrders: orders,
     totalAmmount: parseFloat(ammount),
     comission: parseFloat(comission),
+    ordersDetails: orderDetailsArray,
   })
 }
 
@@ -62,7 +60,7 @@ const createToken = async (req, res) => {
   const user = await getUserByCodeDb(code.toLowerCase())
 
   if (!user.rowCount) {
-    throw new ConflictError('User not found')
+    throw new NotFoundError('User not found')
   }
 
   const isPasswordValid = await verifyPasswordDb(
