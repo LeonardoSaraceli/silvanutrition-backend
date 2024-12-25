@@ -11,7 +11,17 @@ const app = express()
 app.use(json())
 app.use(
   cors({
-    origin: process.env.FRONTENDURL,
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        process.env.PRODUCTIONURL,
+        process.env.DEVELOPMENTURL,
+      ]
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    },
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
     preflightContinue: false,
