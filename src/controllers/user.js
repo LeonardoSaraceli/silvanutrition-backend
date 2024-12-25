@@ -11,6 +11,20 @@ import {
   NotFoundError,
 } from '../errors/ApiError.js'
 
+const getUserByCode = async (req, res) => {
+  const user = await getUserByCodeDb(req.user.code)
+
+  if (!user.rowCount) {
+    throw new NotFoundError('User not found')
+  }
+
+  delete user.rows[0].password
+
+  return res.json({
+    user: user.rows[0],
+  })
+}
+
 const getUserCodes = async (req, res) => {
   const { startDate, endDate } = req.query
 
@@ -79,4 +93,4 @@ const createToken = async (req, res) => {
   })
 }
 
-export { getUserCodes, createUser, createToken }
+export { getUserByCode, getUserCodes, createUser, createToken }
