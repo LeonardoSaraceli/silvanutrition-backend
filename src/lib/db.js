@@ -9,7 +9,4 @@ export const db = new Pool({
   user: PGUSER,
   password: PGPASSWORD,
   port: Number(PGPORT),
-  ssl: {
-    rejectUnauthorized: false,
-  },
 })
