@@ -9,7 +9,14 @@ import userRoute from './routes/user.js'
 const app = express()
 
 app.use(json())
-app.use(cors())
+app.use(
+  cors({
+    origin: process.env.FRONTENDURL,
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true,
+    preflightContinue: false,
+  })
+)
 app.use(morgan('dev'))
 
 app.use('/users', userRoute)
