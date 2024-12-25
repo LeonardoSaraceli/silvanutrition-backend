@@ -9,19 +9,10 @@ import userRoute from './routes/user.js'
 const app = express()
 
 app.use(json())
+export const allowedOrigin = process.env.FRONTEND_URL || 'http://localhost:5173'
 app.use(
   cors({
-    origin: (origin, callback) => {
-      const allowedOrigins = [
-        process.env.PRODUCTIONURL,
-        process.env.DEVELOPMENTURL,
-      ]
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true)
-      } else {
-        callback(new Error('Not allowed by CORS'))
-      }
-    },
+    origin: allowedOrigin,
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
     preflightContinue: false,
