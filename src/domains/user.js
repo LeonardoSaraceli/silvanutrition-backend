@@ -107,10 +107,18 @@ const createTokenDb = (userCode, secretKey) => {
   return jwt.sign({ code: userCode }, secretKey)
 }
 
+const editUserDb = (userPassword, userCode) => {
+  return db.query('UPDATE users SET password = $1 WHERE code = $2', [
+    userPassword,
+    userCode,
+  ])
+}
+
 export {
   getUserCodesDb,
   getUserByCodeDb,
   createUserDb,
   verifyPasswordDb,
   createTokenDb,
+  editUserDb,
 }

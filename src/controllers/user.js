@@ -1,6 +1,7 @@
 import {
   createTokenDb,
   createUserDb,
+  editUserDb,
   getUserByCodeDb,
   getUserCodesDb,
   verifyPasswordDb,
@@ -93,4 +94,23 @@ const createToken = async (req, res) => {
   })
 }
 
-export { getUserByCode, getUserCodes, createUser, createToken }
+const editUser = async (req, res) => {
+  const { password } = req.body
+  const { code } = req.params
+
+  const user = await getUserByCodeDb(code)
+
+  if (!user.rows) {
+    throw new NotFoundError('User not found')
+  }
+
+  await editUserDb(password, code)
+  const updatedUser = await getUserByCodeDb(code)
+  delete updatedUser.rows[0].password
+
+  return res.json({
+    user: updatedUser.rows[0],
+  })
+}
+
+export { getUserByCode, getUserCodes, createUser, createToken, editUser }
