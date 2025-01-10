@@ -107,9 +107,9 @@ const createTokenDb = (userCode, secretKey) => {
   return jwt.sign({ code: userCode }, secretKey)
 }
 
-const editUserDb = (userPassword, userCode) => {
+const editUserDb = async (userPassword, userCode) => {
   return db.query('UPDATE users SET password = $1 WHERE code = $2', [
-    userPassword,
+    await bcrypt.hash(String(userPassword), 10),
     userCode,
   ])
 }
