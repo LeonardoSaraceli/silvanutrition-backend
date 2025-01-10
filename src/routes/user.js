@@ -14,6 +14,6 @@ route.get('/jwt', isTokenValid, getUserByCode)
 route.get('/', isTokenValid, getUserCodes)
 route.post('/register', createUser)
 route.post('/login', createToken)
-route.put('/code', editUser)
+route.put('/:code', editUser)
 
 export default route
