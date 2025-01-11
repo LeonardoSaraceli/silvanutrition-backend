@@ -34,7 +34,7 @@ const getUserCodes = async (req, res) => {
 
   res.json({
     code: req.user.code,
-    startDate: startDate ?? '1970-01-01T00:00:00.000Z',
+    startDate: startDate ?? '2024-11-15T00:00:00.000Z',
     endDate: endDate ?? new Date().toISOString(),
     totalOrders: orders,
     totalAmmount: parseFloat(ammount),

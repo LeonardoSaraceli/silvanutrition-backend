@@ -18,7 +18,7 @@ const getUserCodesDb = async (userCode, startDate, endDate) => {
   for (let page = 1; ; page++) {
     const queryData = await fetch(
       `${process.env.VTEXURL}?f_creationDate=creationDate:[${
-        startDate ?? '1970-01-01T00:00:00.000Z'
+        startDate ?? '2024-11-15T00:00:00.000Z'
       } TO ${
         endDate ?? new Date().toISOString()
       }]&f_status=${validStatuses.join(',')}&page=${page}&per_page=100`,
