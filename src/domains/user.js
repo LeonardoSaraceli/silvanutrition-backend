@@ -103,8 +103,8 @@ const verifyPasswordDb = async (formPw, userPw) => {
   return await bcrypt.compare(String(formPw), String(userPw))
 }
 
-const createTokenDb = (userCode, secretKey) => {
-  return jwt.sign({ code: userCode }, secretKey)
+const createTokenDb = (userCode, userRole, secretKey) => {
+  return jwt.sign({ code: userCode, role: userRole }, secretKey)
 }
 
 const editUserDb = async (userPassword, userCode) => {

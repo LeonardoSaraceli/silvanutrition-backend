@@ -87,10 +87,15 @@ const createToken = async (req, res) => {
     throw new NotFoundError('User not found')
   }
 
-  const token = createTokenDb(code.toLowerCase(), process.env.SECRETKEY)
+  const token = createTokenDb(
+    code.toLowerCase(),
+    user.rows[0].role,
+    process.env.SECRETKEY
+  )
 
   res.status(201).json({
     token,
+    role: user.rows[0].role,
   })
 }
 

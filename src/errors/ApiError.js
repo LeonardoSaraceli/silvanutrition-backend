@@ -18,6 +18,12 @@ class InvalidTokenError extends ApiError {
   }
 }
 
+class UnauthorizedTokenError extends ApiError {
+  constructor(message) {
+    super(403, message)
+  }
+}
+
 class NotFoundError extends ApiError {
   constructor(message) {
     super(404, message)
@@ -31,4 +37,10 @@ class ConflictError extends ApiError {
 }
 
 export default ApiError
-export { BadRequestError, InvalidTokenError, NotFoundError, ConflictError }
+export {
+  BadRequestError,
+  InvalidTokenError,
+  UnauthorizedTokenError,
+  NotFoundError,
+  ConflictError,
+}
