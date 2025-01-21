@@ -58,14 +58,22 @@ const getUserCodesDb = async (userCode, startDate, endDate) => {
             )
 
           if (couponData) {
+            const totalPrice =
+              orderDetails.totals.find((total) => total.id === 'Items')?.value /
+              100
+
+            const totalDiscount =
+              orderDetails.totals.find((total) => total.id === 'Discounts')
+                ?.value / 100
+
             totalOrders++
-            totalAmount += order.totalValue / 100
+            totalAmount += totalPrice + totalDiscount
 
             orderDetailsArray.push({
               buyer: orderDetails.clientProfileData.firstName,
-              total: (order.totalValue / 100).toFixed(2),
+              total: (totalPrice + totalDiscount).toFixed(2),
               date: new Date(order.creationDate).toLocaleDateString('pt-BR'),
-              comission: ((order.totalValue / 100) * 0.15).toFixed(2),
+              comission: ((totalPrice + totalDiscount) * 0.15).toFixed(2),
             })
           }
         } catch (err) {
