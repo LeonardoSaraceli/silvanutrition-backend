@@ -15,13 +15,15 @@ const getUserCodesDb = async (userCode, startDate, endDate) => {
   let totalAmount = 0
   const orderDetailsArray = []
 
+  let currentEndDate = endDate ?? new Date().toISOString()
+
   for (let page = 1; ; page++) {
     const queryData = await fetch(
       `${process.env.VTEXURL}?f_creationDate=creationDate:[${
         startDate ?? '2024-11-15T00:00:00.000Z'
-      } TO ${
-        endDate ?? new Date().toISOString()
-      }]&f_status=${validStatuses.join(',')}&page=${page}&per_page=100`,
+      } TO ${currentEndDate}]&f_status=${validStatuses.join(
+        ','
+      )}&page=${page}&per_page=100`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +87,22 @@ const getUserCodesDb = async (userCode, startDate, endDate) => {
       })
     )
 
-    if (page >= queryData.paging.pages) break
+    if (page === 30) {
+      const lastOrderDate = orderDetailsArray[orderDetailsArray.length - 1].date
+
+      const [dia, mes, ano] = lastOrderDate.split('/')
+      const data = new Date(ano, mes - 1, dia)
+
+      data.setDate(data.getDate() - 1)
+      data.setHours(23, 59, 59, 999)
+
+      const dataIso = data.toISOString()
+
+      currentEndDate = dataIso
+      page = 1
+    }
+
+    if (page === queryData.paging.pages) break
   }
 
   return {
